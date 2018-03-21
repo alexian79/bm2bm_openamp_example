@@ -1,0 +1,170 @@
+/*
+ * retarget_host.cc
+ *
+ *  Created on: Aug 5, 2017
+ *      Author: alexian79
+ */
+extern "C"
+{
+#include "openamp/open_amp.h"
+#include "openamp/rpmsg_retarget.h"
+//#include "metal/alloc.h"
+}
+#include <stdio.h>
+
+#define RPC_CHANNEL_READY_TO_CLOSE "rpc_channel_ready_to_close"
+
+struct _proxy_data {
+	int active;
+	int rpmsg_proxy_fd;
+	struct _sys_rpc *rpc;
+	struct _sys_rpc *rpc_response;
+	char *firmware_path;
+};
+
+static struct _proxy_data *proxy;
+
+int handle_open(struct _sys_rpc *rpc)
+{
+	int fd;
+	ssize_t bytes_written;
+
+	/* Open remote fd */
+	fd = open(rpc->sys_call_args.data, rpc->sys_call_args.int_field1,
+			rpc->sys_call_args.int_field2);
+
+	/* Construct rpc response */
+	proxy->rpc_response->id = OPEN_SYSCALL_ID;
+	proxy->rpc_response->sys_call_args.int_field1 = fd;
+	proxy->rpc_response->sys_call_args.int_field2 = 0; /*not used*/
+	proxy->rpc_response->sys_call_args.data_len = 0; /*not used*/
+
+	/* Transmit rpc response */
+	//bytes_written = write(proxy->rpmsg_proxy_fd, proxy->rpc_response,
+	//			sizeof(struct _sys_rpc));
+	send_rpc((void *)proxy->rpc_response, payload_size);
+
+	return (bytes_written != sizeof(struct _sys_rpc)) ? -1 : 0;
+}
+
+int handle_close(struct _sys_rpc *rpc)
+{
+	int retval;
+	ssize_t bytes_written;
+
+	/* Close remote fd */
+	retval = close(rpc->sys_call_args.int_field1);
+
+	/* Construct rpc response */
+	proxy->rpc_response->id = CLOSE_SYSCALL_ID;
+	proxy->rpc_response->sys_call_args.int_field1 = retval;
+	proxy->rpc_response->sys_call_args.int_field2 = 0; /*not used*/
+	proxy->rpc_response->sys_call_args.data_len = 0; /*not used*/
+
+	/* Transmit rpc response */
+	bytes_written = write(proxy->rpmsg_proxy_fd, proxy->rpc_response,
+				sizeof(struct _sys_rpc));
+
+	return (bytes_written != sizeof(struct _sys_rpc)) ? -1 : 0;
+}
+
+int handle_read(struct _sys_rpc *rpc)
+{
+	ssize_t bytes_read, bytes_written;
+	size_t  payload_size;
+	char *buff;
+
+	/* Allocate buffer for requested data size */
+	buff = malloc(rpc->sys_call_args.int_field2);
+
+	if (rpc->sys_call_args.int_field1 == 0)
+		/* Perform read from fd for large size since this is a
+		STD/I request */
+		bytes_read = read(rpc->sys_call_args.int_field1, buff, 512);
+	else
+		/* Perform read from fd */
+		bytes_read = read(rpc->sys_call_args.int_field1, buff,
+					rpc->sys_call_args.int_field2);
+
+	/* Construct rpc response */
+	proxy->rpc_response->id = READ_SYSCALL_ID;
+	proxy->rpc_response->sys_call_args.int_field1 = bytes_read;
+	proxy->rpc_response->sys_call_args.int_field2 = 0; /* not used */
+	proxy->rpc_response->sys_call_args.data_len = bytes_read;
+	if (bytes_read > 0)
+		memcpy(proxy->rpc_response->sys_call_args.data, buff,
+			bytes_read);
+
+	payload_size = sizeof(struct _sys_rpc) +
+			((bytes_read > 0) ? bytes_read : 0);
+
+	/* Transmit rpc response */
+	bytes_written = write(proxy->rpmsg_proxy_fd, proxy->rpc_response,
+					payload_size);
+
+	return (bytes_written != payload_size) ? -1 : 0;
+}
+
+int handle_write(struct _sys_rpc *rpc)
+{
+	ssize_t bytes_written;
+
+	/* Write to remote fd */
+	bytes_written = write(rpc->sys_call_args.int_field1,
+				rpc->sys_call_args.data,
+				rpc->sys_call_args.int_field2);
+
+	/* Construct rpc response */
+	proxy->rpc_response->id = WRITE_SYSCALL_ID;
+	proxy->rpc_response->sys_call_args.int_field1 = bytes_written;
+	proxy->rpc_response->sys_call_args.int_field2 = 0; /*not used*/
+	proxy->rpc_response->sys_call_args.data_len = 0; /*not used*/
+
+	/* Transmit rpc response */
+	bytes_written = write(proxy->rpmsg_proxy_fd, proxy->rpc_response,
+				sizeof(struct _sys_rpc));
+
+	return (bytes_written != sizeof(struct _sys_rpc)) ? -1 : 0;
+}
+
+int handle_rpc(struct _sys_rpc *rpc)
+{
+	int retval;
+	char *data = (char *)rpc;
+	if (!strcmp(data, RPC_CHANNEL_READY_TO_CLOSE)) {
+		proxy->active = 0;
+		return 0;
+	}
+
+	/* Handle RPC */
+	switch ((int)(rpc->id)) {
+	case OPEN_SYSCALL_ID:
+	{
+		retval = handle_open(rpc);
+		break;
+	}
+	case CLOSE_SYSCALL_ID:
+	{
+		retval = handle_close(rpc);
+		break;
+	}
+	case READ_SYSCALL_ID:
+	{
+		retval = handle_read(rpc);
+		break;
+	}
+	case WRITE_SYSCALL_ID:
+	{
+		retval = handle_write(rpc);
+		break;
+	}
+	default:
+	{
+		printf("\r\nMaster>Err:Invalid RPC sys call ID: %d:%d! \r\n", rpc->id,WRITE_SYSCALL_ID);
+		retval = -1;
+		break;
+	}
+	}
+
+	return retval;
+}

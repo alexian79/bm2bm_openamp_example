@@ -1,0 +1,23 @@
+10:15:41 **** Auto Build of configuration Debug for project master_bsp_xscugic_example_1 ****
+make pre-build main-build 
+a9-linaro-pre-build-step
+ 
+Building file: ../src/xscugic_example.c
+Invoking: ARM v7 gcc compiler
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/xscugic_example.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -I../../master_bsp/ps7_cortexa9_0/include -MMD -MP -MF"src/xscugic_example.d" -MT"src/xscugic_example.o" -o "src/xscugic_example.o" "../src/xscugic_example.c"
+Finished building: ../src/xscugic_example.c
+ 
+Building target: master_bsp_xscugic_example_1.elf
+Invoking: ARM v7 gcc linker
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -L../../master_bsp/ps7_cortexa9_0/lib -o "master_bsp_xscugic_example_1.elf"  ./src/xscugic_example.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lgcc,-lc,--end-group -Wl,--start-group,-lxil,-lmetal,-lopen_amp,-lgcc,-lc,--end-group -Wl,--start-group,-lxilffs,-lxil,-lgcc,-lc,--end-group
+Finished building target: master_bsp_xscugic_example_1.elf
+ 
+Invoking: ARM v7 Print Size
+arm-none-eabi-size master_bsp_xscugic_example_1.elf  |tee "master_bsp_xscugic_example_1.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  31128	   2724	  22600	  56452	   dc84	master_bsp_xscugic_example_1.elf
+Finished building: master_bsp_xscugic_example_1.elf.size
+ 
+
+10:15:43 Build Finished (took 1s.830ms)
+

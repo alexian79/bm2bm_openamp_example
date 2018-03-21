@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="__STDC_NO_ATOMICS__" key="org.eclipse.cdt.utils.ui.controls.FileListControl"/>
+	<section name="org.eclipse.cdt.ui.OPEN_ACTION_SELECTION_DIALOG_SECTION">
+		<item value="1077" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="437" key="DIALOG_HEIGHT"/>
+		<item value="549" key="DIALOG_X_ORIGIN"/>
+		<item value="208" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.cdt.ui.text.hover.CMacroExpansionExploration.internal">
+		<item value="180" key="size.height"/>
+		<item value="521" key="size.width"/>
+	</section>
+	<section name="CPathsPropertyPage">
+		<item value="0" key="pageIndex"/>
+	</section>
+	<section name="org.eclipse.cdt.ui.text.hover.CMacroExpansionExploration">
+	</section>
+	<section name="PDOMSearchPage">
+		<item value="false" key="caseSensitive"/>
+		<item value="227191" key="searchFlags"/>
+		<list key="previousPatterns">
+			<item value="WITH_PROXY"/>
+			<item value="METAL_CACHE_UNKNOWN"/>
+			<item value="hil_set_vring"/>
+			<item value="virtqueue_enable_cb"/>
+			<item value="create_virtqueues"/>
+			<item value="rpmsg_rx_callback"/>
+			<item value="channel_created"/>
+			<item value="rpmsg_channel_created"/>
+			<item value="enable_interrupt"/>
+			<item value="_enable_interrupt"/>
+			<item value="_poll"/>
+			<item value="hil_enable_vdev_notification"/>
+			<item value="rpmsg_start_ipc"/>
+			<item value="chnl_is_alive"/>
+			<item value="hil_set_vdev_ipi"/>
+			<item value="VIRTIO_CONFIG_STATUS_ACK"/>
+			<item value="VIRTIO_CONFIG_STATUS_DRIVER_OK"/>
+			<item value="rpmsg_rdev_init"/>
+			<item value="rpmsg_vdev"/>
+			<item value="InterruptProcessed"/>
+			<item value="XSCUGIC_SPI_CPU0_MASK"/>
+			<item value="XScuGic_Enable"/>
+			<item value="DistributorInit"/>
+			<item value="DoDistributorInit"/>
+			<item value="proc_vdev"/>
+			<item value="pvdev"/>
+			<item value="intr_info"/>
+			<item value="sh_buff"/>
+			<item value="_metal"/>
+			<item value="__sev"/>
+			<item value="sev"/>
+			<item value="hil_set_shm"/>
+			<item value="hil_create_proc"/>
+			<item value="zynq_a9_proc_ops"/>
+			<item value="metal_io_init"/>
+			<item value="physmap"/>
+			<item value="config_get_firmware"/>
+			<item value="platform_create_proc"/>
+			<item value="proc_table"/>
+			<item value="hil_proc"/>
+			<item value="atomic_uchar"/>
+		</list>
+	</section>
+	<section name="completion_proposal_size">
+	</section>
+	<section name="org.eclipse.cdt.internal.ui.typehierarchy.OpenTypeInHierarchyActionSettings">
+		<item value="true" key="show_enums"/>
+		<item value="true" key="show_unions"/>
+		<item value="false" key="show_macros"/>
+		<item value="true" key="show_classes"/>
+		<item value="false" key="show_functions"/>
+		<item value="true" key="show_lowlevel"/>
+		<item value="false" key="show_namespaces"/>
+		<item value="false" key="show_enumerators"/>
+		<item value="true" key="show_structs"/>
+		<item value="937" key="x"/>
+		<item value="432" key="width"/>
+		<item value="235" key="y"/>
+		<item value="true" key="show_typedefs"/>
+		<item value="false" key="show_variables"/>
+		<item value="662" key="height"/>
+	</section>
+</section>

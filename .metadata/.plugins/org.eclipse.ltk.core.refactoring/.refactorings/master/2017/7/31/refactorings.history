@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move &apos;openamp_v1_31&apos; to &apos;master&apos;" description="Move &apos;openamp_v1_31&apos; to &apos;master&apos;" destination="/master" element1="/design_1_wrapper_hw_platform_0/openamp_v1_31" flags="7" id="org.eclipse.ltk.core.refactoring.move.resources" resources="1" stamp="1501513293612" updateReferences="true"/>
+</session>
